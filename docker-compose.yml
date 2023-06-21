@@ -30,3 +30,22 @@ services:
           - ./blackbox_exporter/config.yml:/etc/blackbox_exporter/config.yml
         ports:
           - 9115:9115
+    
+    cadvisor:
+        image: gcr.io/cadvisor/cadvisor:latest
+        container_name: cadvisor
+        ports:
+        - 8080:8080
+        volumes:
+        - /:/rootfs:ro
+        - /var/run:/var/run:rw
+        - /sys:/sys:ro
+        - /var/lib/docker/:/var/lib/docker:ro
+        depends_on:
+        - redis
+        
+    redis:
+        image: redis:latest
+        container_name: redis
+        ports:
+        - 6379:6379
