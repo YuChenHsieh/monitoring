@@ -30,4 +30,12 @@
       - targets: 
         - node_exporter:9100
 
-    
+    - job_name: "promtail"
+      static_configs:
+      - targets:
+        - host.docker.internal:9080
+
+    - job_name: "loki"
+      static_configs:
+      - targets:
+        - loki:3100

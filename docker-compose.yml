@@ -13,13 +13,29 @@ services:
         ports:
           - 3000:3000
 
+    loki:
+      image: grafana/loki:2.8.4
+      container_name: loki
+      volumes:
+        - ./loki/loki.yml:/tmp/loki.yml
+      command: -config.file=/tmp/loki.yml
+      ports:
+        - 3100:3100
+
     prometheus:
         image: prom/prometheus:latest
         container_name: prometheus
+        command: --config.file=/tmp/prometheus.yml
         volumes:
-         -  ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+         -  ./prometheus/prometheus.yml:/tmp/prometheus.yml
         ports:
          - 9090:9090
+
+    alert_manager:
+       image: quay.io/prometheus/alertmanager:latest
+       container_name: alert_manager
+       ports:
+        - 9093:9093
 
     blackbox_exporter:
         image: quay.io/prometheus/blackbox-exporter:latest
